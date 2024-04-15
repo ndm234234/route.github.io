@@ -53,15 +53,28 @@ function init () {
 
         // Создаем на основе существующей модели мультимаршрут.
         multiRoute = new ymaps.multiRouter.MultiRoute(multiRouteModel, {
-            routeStrokeWidth: 2,
-            routeStrokeColor: "#000088",
-            routeActiveStrokeWidth: 6,
-            routeActiveStrokeColor: "#E63E92",
+            // routeStrokeWidth: 2,
+            // routeStrokeColor: "#000088",
+            // routeActiveStrokeWidth: 6,
+            // routeActiveStrokeColor: "#E63E92",
             // Путевые точки можно перетаскивать.
             // Маршрут при этом будет перестраиваться.
             wayPointDraggable: true,
             boundsAutoApply: true
         });
+
+    // Создадим элемент управления "Пробки".
+    var trafficControl = new ymaps.control.TrafficControl({ state: {
+            // Отображаются пробки "Сейчас".
+            providerKey: 'traffic#actual',
+            // Начинаем сразу показывать пробки на карте.
+            trafficShown: true
+        }});
+    // Добавим контрол на карту.
+    myMap.controls.add(trafficControl);
+    // Получим ссылку на провайдер пробок "Сейчас" и включим показ инфоточек.
+    trafficControl.getProvider('traffic#actual').state.set('infoLayerShown', true);    
+
 
     // Добавляем мультимаршрут на карту.
     myMap.geoObjects.add(multiRoute);
