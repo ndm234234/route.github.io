@@ -53,6 +53,10 @@ function init () {
 
         // Создаем на основе существующей модели мультимаршрут.
         multiRoute = new ymaps.multiRouter.MultiRoute(multiRouteModel, {
+            routeStrokeWidth: 2,
+            routeStrokeColor: "#000088",
+            routeActiveStrokeWidth: 6,
+            routeActiveStrokeColor: "#E63E92",
             // Путевые точки можно перетаскивать.
             // Маршрут при этом будет перестраиваться.
             wayPointDraggable: true,
