@@ -60,9 +60,8 @@ ymaps.modules.define('MultiRouteCustomView', [
 
         processSuccessRequest: function (multiRouteModel, e) {
             var routes = multiRouteModel.getRoutes(),
-                result = ["Данные успешно получены."];
+                result = ["Всего маршрутов: " + routes.length + "."];
             if (routes.length) {
-                result.push("Всего маршрутов: " + routes.length + ".");
                 for (var i = 0, l = routes.length; i < l; i++) {
                     result.push(this.processRoute(i, routes[i]));
                 }
@@ -83,7 +82,7 @@ ymaps.modules.define('MultiRouteCustomView', [
         },
 
         processDrivingRoute: function (route) {
-            var result = ["Авто " + this.createCommonRouteOutput(route)] ;
+            var result = ["Авто: " + this.createCommonRouteOutput(route)] ;
             return result.join("<br/>");
         },
 
