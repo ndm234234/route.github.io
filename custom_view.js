@@ -82,26 +82,25 @@ ymaps.modules.define('MultiRouteCustomView', [
         },
 
         processDrivingRoute: function (route) {
-            var result = ["Авто: " + this.createCommonRouteOutput(route)] ;
+            var result = ["Авто: " + this.createCommonRouteOutput(route, "durationInTraffic")] ;
             return result.join("<br/>");
         },
 
         processMasstransitRoute: function (route) {
             var result = ["Маршрут на общественном транспорте."];
-            result.push(this.createCommonRouteOutput(route));
+            result.push(this.createCommonRouteOutput(route, "duration"));
             result.push("Описание маршута: <ul>" + this.createMasstransitRouteOutput(route) + "</ul>");
             return result.join("<br/>");
         },
 
         processPedestrianRoute: function (route) {
-            var result = ["Пешеходный маршрут."];
-            result.push(this.createCommonRouteOutput(route));
+            var result = ["Пешеходный маршрут: " + this.createCommonRouteOutput(route, "duration")];
             return result.join("<br/>");
         },
 
         // Метод, формирующий общую часть описания для всех типов маршрутов.
-        createCommonRouteOutput: function (route) {
-            return route.properties.get("distance").text + ", " + route.properties.get("duration").text;
+        createCommonRouteOutput: function (route, duration) {
+            return route.properties.get("distance").text + ", " + route.properties.get(duration).text;
         },
 
         // Метод, строящий список текстовых описаний для
