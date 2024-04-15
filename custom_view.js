@@ -83,7 +83,7 @@ ymaps.modules.define('MultiRouteCustomView', [
         },
 
         processDrivingRoute: function (route) {
-            var result = ["Автомобильный маршрут. " + this.createCommonRouteOutput(route)] ;
+            var result = ["Авто " + this.createCommonRouteOutput(route)] ;
             return result.join("<br/>");
         },
 
