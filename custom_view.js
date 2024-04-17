@@ -83,6 +83,17 @@ ymaps.modules.define('MultiRouteCustomView', [
 
         processDrivingRoute: function (route) {
             var result = ["Авто: " + this.createCommonRouteOutput(route, "durationInTraffic")] ;
+
+            var table = document.getElementById("myTable");
+
+            var row = table.insertRow();
+            var cell1 = row.insertCell(0);
+            var cell2 = row.insertCell(1);
+            var cell3 = row.insertCell(2);
+            cell1.innerHTML = "Авто";
+            cell2.innerHTML = route.properties.get("distance").text;
+            cell3.innerHTML = route.properties.get("durationInTraffic").text;
+
             return result.join("<br/>");
         },
 
@@ -106,6 +117,15 @@ ymaps.modules.define('MultiRouteCustomView', [
         // Метод, строящий список текстовых описаний для
         // всех сегментов маршрута на общественном транспорте.
         createMasstransitRouteOutput: function (route) {
+
+            var table = document.getElementById("myTable");
+
+            var rowCount = table.rows.length;
+            for (var i = rowCount - 1; i > 1; i--) {
+                table.deleteRow(i);
+            }
+
+
             var result = [];
             for (var i = 0, l = route.getPaths().length; i < l; i++) {
                 var path = route.getPaths()[i];
