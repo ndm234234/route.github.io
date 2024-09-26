@@ -53,9 +53,16 @@ now: 0, // current question
 score: 0, // current score
 correctAnswers : 0,
 currentCommand : "",
+
+setScore: (control, name, value) => {
+  control.innerHTML = `${name}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Cчет: ${value}`;
+},
+
 // INIT QUIZ HTML
 init: () => {
   // WRAPPER
+
+  quiz.hWrap = document.querySelector('.quizWrap');
 
   document.getElementById('btn-try-again').addEventListener('click', () => window.location.reload() );
 
@@ -66,7 +73,7 @@ init: () => {
     command.id = "command";
     command.className = "command";
     command.name = value;
-    command.innerHTML = `${value}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Cчет: 0`;
+    quiz.setScore(command, value, 0 );
 
     command.addEventListener("click", () => {
       let all = commands.getElementsByClassName("command");
@@ -75,10 +82,23 @@ init: () => {
         {
            control.classList.add("correct");
            currentCommand = control.name;
+           document.querySelector('.quizWrap').classList.add('active');
+           quiz.hWrap.innerHTML = "";
+           // QUESTIONS SECTION
+           quiz.hQn = document.createElement("div");
+           quiz.hQn.id = "quizQn";
+           quiz.hWrap.appendChild(quiz.hQn);
+           // ANSWERS SECTION
+           quiz.hAns = document.createElement("div");
+           quiz.hAns.id = "quizAns";
+           quiz.hWrap.appendChild(quiz.hAns);
+           // GO!
+           quiz.draw();
         }
         else
         {
           control.classList.remove("correct");
+          control.classList.add("disable"); 
         }
       }
     });
@@ -86,17 +106,6 @@ init: () => {
     commands.appendChild(command);
   });
 
-  quiz.hWrap = document.getElementById("quizWrap");
-  // QUESTIONS SECTION
-  quiz.hQn = document.createElement("div");
-  quiz.hQn.id = "quizQn";
-  quiz.hWrap.appendChild(quiz.hQn);
-  // ANSWERS SECTION
-  quiz.hAns = document.createElement("div");
-  quiz.hAns.id = "quizAns";
-  quiz.hWrap.appendChild(quiz.hAns);
-  // GO!
-  quiz.draw();
 },
 
 // DRAW QUESTION
@@ -142,16 +151,19 @@ select: (option) => {
     let all = commands.getElementsByClassName("command");
     for (let control of all) {
       if (control.name == currentCommand) {
-
-        control.innerHTML = `${control.name}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Cчет: ${quiz.score}`;
+        quiz.setScore(control, currentCommand, quiz.score );
       }
     }
-
-
-
     } else {
     option.classList.add("wrong");
   }
+
+  let commands = document.getElementById("commands");
+  let all1 = commands.getElementsByClassName("command");
+  for (let control of all1) {
+    control.classList.remove("disable");
+  }
+
   // NEXT QUESTION OR END GAME
   quiz.now++;
   setTimeout(() => {

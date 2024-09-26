@@ -1,11 +1,16 @@
 /* (A) WRAPPER */
-#quizWrap {
+.quizWrap {
   max-width: 600px;
   margin: 0 auto;
+    display: flex;
 
   /* RECOMMENDED FIXED HEIGHT IF YOU HAVE CONTENT BELOW THE QUIZ */
   /* SO THAT PAGE LAYOUT DOES NOT "JUMP" */
-  /* height: 250px; */
+  height: 250px;
+}
+
+.quizWrap.active {
+  display: grid;
 }
 
 /* (B) QUESTION */
@@ -87,6 +92,11 @@ html, body {
   background-color: red;
 }
 
+
+#command.disable {
+  opacity: 0.4;
+  pointer-events: one;
+}
 
 .quiz-over-modal {
   position: fixed;
