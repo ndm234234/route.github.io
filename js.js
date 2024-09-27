@@ -322,11 +322,12 @@ reset : () => {
 
   var yourListMaps = [];
   for (let cmd of playCommands) {
-    yourListMaps.push( { command : cmd[0], 
-                         questions : cmd[1].questions, 
-                         correctAnswers : cmd[1].correctAnswers,
-                         score : cmd[1].score });
-
+    if (cmd[1].questions > 0) {
+      yourListMaps.push( { command : cmd[0], 
+                          questions : cmd[1].questions, 
+                          correctAnswers : cmd[1].correctAnswers,
+                          score : cmd[1].score });
+    }
   }
 
   yourListMaps.sort(function(a,b){
@@ -343,7 +344,7 @@ reset : () => {
     results.push(str);
   }
 
-  document.getElementById('info').innerHTML = "<br>" + results.join("<br><br>") + "<br>";
+  document.getElementById('info').innerHTML = "<br>" + results.join("<br><br>") + "<br><br><br>";
   
   document.querySelector('.quiz-over-modal').classList.add('active')
 
@@ -352,6 +353,5 @@ reset : () => {
   //quiz.draw();
 }
 };
-
 
 window.addEventListener("load", quiz.init);
