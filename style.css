@@ -2,7 +2,7 @@
 .quizWrap {
   max-width: 600px;
   margin: 0 auto;
-    display: flex;
+    display: none;
 
   /* RECOMMENDED FIXED HEIGHT IF YOU HAVE CONTENT BELOW THE QUIZ */
   /* SO THAT PAGE LAYOUT DOES NOT "JUMP" */
@@ -95,7 +95,7 @@ html, body {
 
 #command.disable {
   opacity: 0.4;
-  pointer-events: one;
+  pointer-events: none;
 }
 
 .quiz-over-modal {
@@ -143,4 +143,68 @@ html, body {
 
 .quiz-over-modal .content button:hover {
   background-color: #ff9900e5;
+}
+
+.container {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+
+table {
+	width: 1000px;
+	border-collapse: collapse;
+	overflow: hidden;
+	box-shadow: 0 0 20px rgba(0,0,0,0.1);
+  cursor: pointer;
+  display:  none;
+  font-size: 24px;
+
+}
+
+table.active {
+  display:  flex;
+}
+
+th,
+td {
+	padding: 15px;
+	color: #fff;
+  width: 1000px;
+  text-align: center;
+
+}
+
+th {
+	text-align: left;
+}
+
+thead {
+	th {
+		background-color: #55608f;
+	}
+}
+
+tbody {
+	tr {
+		&:hover {
+			background-color: rgba(255,255,255,0.3);
+		}
+	}
+	td {
+		position: relative;
+		&:hover {
+			&:before {
+				content: "";
+				position: absolute;
+				left: 0;
+				right: 0;
+				top: -9999px;
+				bottom: -9999px;
+        background-color: rgba(255,255,255,0.2);
+				z-index: -1;
+			}
+		}
+	}
 }
