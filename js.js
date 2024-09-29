@@ -4,7 +4,43 @@ let quiz = {
 // Q = QUESTION, O = OPTIONS, A = CORRECT ANSWER
 data: [
   {
-  q: "Как назвается скамейка в митино ?",
+    q: "Где расположен Храм Рождества Христова?",
+    o: [
+    "Пос. Новобратцево ",
+    "Село Рождествено",
+    "Ул. Генерала Белобородова",
+    "Ул. Пятницкое шоссе",
+    ],
+    a: 2,
+    score: 30,
+    cat : "Достопримечательности"
+  },
+  {
+    q: "В честь кого из героев Митино названа одна из школ Митино?",
+    o: [
+    "Рокоссовский ",
+    "Жуков",
+    "Белобородов",
+    "Конев",
+    ],
+    a: 3,
+    score: 30,
+    cat : "Герои Митино"
+    },
+    {
+      q: "В каком году впервые упоминается деревня «Митино» ?",
+      o: [
+      "В 1389 в завещании Дмитрия Донского",
+      "В летописях в 1646 года",
+      "В постановлении 1985 о вхождении в состав Москвы",
+      "В 1997 при создании герба",
+      ],
+      a: 1,
+      score: 30,
+      cat : "История Митино"
+      },
+  {
+  q: "Как назвается скамейка в Митино ?",
   o: [
   "Старая",
   "Новая",
@@ -15,7 +51,7 @@ data: [
   cat : "История Митино"
   },
   {
-  q: "Как назвается скамейка в митино 2 ?",
+  q: "Как назвается скамейка в Митино 2 ?",
   o: [
   "Старая",
   "Новая",
@@ -64,13 +100,17 @@ hWrap: null, // HTML quiz container
 hQn: null, // HTML question wrapper
 hAns: null, // HTML answers wrapper
 // GAME FLAGS
-now: 0, // current question
 currentCommand : "",
-playCommands : null,
+playCommands : new Map(),
 queries : null,
 
-setScore: (control, name, value) => {
-  control.innerHTML = `${name}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Cчет: ${value}`;
+setScore: (control, name, value, correctAnswers, totalQuestion) => {
+  let text = `${name}<br>Cчет: ${value}`;
+  if (correctAnswers > 0 || totalQuestion > 0)
+  {
+    text += "<br>Ответы: правильных " + correctAnswers + ", неправильных " + (totalQuestion - correctAnswers);
+  }
+  control.innerHTML = text;
 },
 
 JSONToFile : (obj, filename) => {
@@ -92,6 +132,20 @@ fillTable: () => {
   var tbl = document.getElementById('quizTable').getElementsByTagName('tbody')[0];
   tbl.innerHTML = "";
 
+  var mapColumns = new Set();
+  for (let entry of queries) {
+    for (let columns of entry[1]) {
+      mapColumns.add(columns[0]);
+    }
+  }
+  var sortedColumns = [];
+  for (let mapColumn of mapColumns) {
+    sortedColumns.push(mapColumn);
+  }
+  sortedColumns.sort(function(a,b){
+    return a - b;
+  });
+
   for (let entry of queries) {
 
     if (entry[1].size > 0) {
@@ -100,23 +154,37 @@ fillTable: () => {
       td.appendChild(document.createTextNode(entry[0]));
       td.style.border = '0px solid black';
 
-      for (let scores of entry[1]) {
-          const td1 = tr.insertCell();
-          td1.appendChild(document.createTextNode(scores[0]));
+      for (let column of sortedColumns) {
+        const td1 = tr.insertCell();
+        var exist = false;
+        for (let scores of entry[1]) {
+          if (scores[0] == column) {
+            td1.appendChild(document.createTextNode(scores[0]));
+            td1.style.border = '0px solid black';
+            td1.addEventListener('click', () => quiz.showQuestion(td.innerText, scores[0]));
+            exist = true;
+            break;
+          }
+        }
+        if (!exist) {
+          td1.appendChild(document.createTextNode("-"));
           td1.style.border = '0px solid black';
-          td1.addEventListener('click', () => quiz.showQuestion(td.innerText, scores[0]));
+        }
       }
     }
   }
 },
 
 // INIT QUIZ HTML
-init: () => {
+init: (commandNames) => {
   // WRAPPER
 
+  currentCommand = "";
   quiz.hWrap = document.querySelector('.quizWrap');
  
-  var jsonData = JSON.stringify(quiz.data);
+  var jsonData = JSON.stringify(quiz.data, null, 2);
+
+  console.log(jsonData);
 
   queries = new Map();
   for (let i = 0; i < quiz.data.length; i++) {
@@ -145,46 +213,33 @@ init: () => {
     }
   }
 
-  document.getElementById('btn-try-again').addEventListener('click', () => window.location.reload() );
+  const commands = document.getElementById("top_commands");
 
-  let commands = document.getElementById("commands");
-  let commandNames = ['Команда 1', 'Команда 2', 'Команда 3', 'Команда 4'];
+  document.querySelectorAll(".command_item").forEach(el => el.remove());
 
-  playCommands = new Map();
   commandNames.forEach(value =>  {
-    playCommands.set(value, { questions : 0, score : 0, correctAnswers : 0});
+    quiz.playCommands.set(value, { questions : 0, score : 0, correctAnswers : 0});
 
     let command = document.createElement("div");
-    command.id = "command";
-    command.className = "command";
+    command.id = "command_item";
+    command.className = "command_item";
     command.name = value;
-    quiz.setScore(command, value, 0 );
+    quiz.setScore(command, value, 0, 0, 0 );
 
     command.addEventListener("click", () => {
-      let all = commands.getElementsByClassName("command");
+      let all = commands.getElementsByClassName("command_item");
       for (let control of all) {
         if (control == command)
         {
           control.classList.add("correct");
           control.classList.remove("disable"); 
 
-          currentCommand = control.name;
-
-           quiz.fillTable();
-           /*
-           document.querySelector('.quizWrap').classList.add('active');
-           quiz.hWrap.innerHTML = "";
-           // QUESTIONS SECTION
-           quiz.hQn = document.createElement("div");
-           quiz.hQn.id = "quizQn";
-           quiz.hWrap.appendChild(quiz.hQn);
-           // ANSWERS SECTION
-           quiz.hAns = document.createElement("div");
-           quiz.hAns.id = "quizAns";
-           quiz.hWrap.appendChild(quiz.hAns);
-           // GO!
-           quiz.draw();
-           */
+          if (currentCommand != control.name)
+          {
+            currentCommand = control.name;
+            document.querySelector('.quizWrap').classList.remove("active");
+            quiz.fillTable();
+          }
         }
         else
         {
@@ -196,15 +251,19 @@ init: () => {
 
     commands.appendChild(command);
   });
-
 },
 
 showQuestion: (cat, scoreValue) => { 
   if (queries.has(cat)) {
     if (queries.get(cat).has(scoreValue)) {
 
-      z = queries.get(cat).get(scoreValue).values().next().value;
-      queries.get(cat).get(scoreValue).delete(z);
+      function getRandomItem(set) {
+        let items = Array.from(set);
+        return items[Math.floor(Math.random() * items.length)];
+      }
+
+      const selectedRandomQuery = getRandomItem(queries.get(cat).get(scoreValue).values());
+      queries.get(cat).get(scoreValue).delete(selectedRandomQuery);
 
       document.getElementById('quizTable').classList.remove("active");
       document.querySelector('.quizWrap').classList.add('active');
@@ -219,7 +278,7 @@ showQuestion: (cat, scoreValue) => {
       quiz.hAns.id = "quizAns";
       quiz.hWrap.appendChild(quiz.hAns);
       // GO!
-      quiz.draw(z);
+      quiz.draw(selectedRandomQuery);
 
       if (queries.get(cat).get(scoreValue).size == 0) {
         queries.get(cat).delete(scoreValue);
@@ -227,7 +286,6 @@ showQuestion: (cat, scoreValue) => {
       if (queries.get(cat).size == 0) {
         queries.delete(cat);
       }
-
     }
   }
 },
@@ -235,7 +293,7 @@ showQuestion: (cat, scoreValue) => {
 // DRAW QUESTION
 draw: (query) => {
   // QUESTION
-  quiz.hQn.innerHTML = query.query + "( " + query.score + " баллов)";
+  quiz.hQn.innerHTML = query.query + "  (" + query.score + " баллов)";
   // OPTIONS
   quiz.hAns.innerHTML = "";
   var index = 0;
@@ -274,54 +332,62 @@ select: (option, query, index) => {
     }
   }
  
-  playCommands.get(currentCommand).questions ++;
+  quiz.playCommands.get(currentCommand).questions ++;
   // CHECK IF CORRECT
   if (correct) {
-    playCommands.get(currentCommand).score += query.score;
-    playCommands.get(currentCommand).correctAnswers ++;
+    quiz.playCommands.get(currentCommand).score += query.score;
+    quiz.playCommands.get(currentCommand).correctAnswers ++;
 
     option.classList.add("correct");
-
-
-    let commands = document.getElementById("commands");
-    let all = commands.getElementsByClassName("command");
-    for (let control of all) {
-      if (control.name == currentCommand) {
-        quiz.setScore(control, currentCommand, playCommands.get(currentCommand).score );
-      }
-    }
     } else {
-    option.classList.add("wrong");
+      option.classList.add("wrong");
   }
 
-  let commands = document.getElementById("commands");
-  let all1 = commands.getElementsByClassName("command");
+  let commands = document.getElementById("top_commands");
+  for (let control of commands.getElementsByClassName("command_item")) {
+    if (control.name == currentCommand) {
+      quiz.setScore(control, currentCommand, quiz.playCommands.get(currentCommand).score, quiz.playCommands.get(currentCommand).correctAnswers, quiz.playCommands.get(currentCommand).questions);
+    }
+  }
+
+  let all1 = commands.getElementsByClassName("command_item");
   for (let control of all1) {
-    control.classList.remove("disable");
+    control.classList.remove("correct");
+    control.classList.remove("disable"); 
   }
 
   setTimeout(() => {
     if (queries.size > 0)
       { 
         document.querySelector('.quizWrap').classList.remove("active");
-        document.getElementById('quizTable').classList.add("active");
-        quiz.fillTable();
+        currentCommand = "";
+
+   //     document.getElementById('quizTable').classList.add("active");
+//        quiz.fillTable();
         // quiz.draw(); 
       }
     else {
-    quiz.hQn.innerHTML = `Вы ответили на ${quiz.score} из ${quiz.data.length} правильно.`;
+    quiz.hQn.innerHTML = "";
     quiz.hAns.innerHTML = "";
-    quiz.reset();
+    quiz.reset(quiz.playCommands);
   }
   }, 500);
  
 },
 
 // RESTART QUIZ
-reset : () => {
+reset : (playCommandsValues) => {
 
+  document.getElementById('quizTable').classList.remove("active");
+
+  document.querySelector('.quizWrap').classList.remove("active");
+  if (playCommandsValues == null || playCommandsValues.size == 0)
+  {
+      return;
+  }
+  
   var yourListMaps = [];
-  for (let cmd of playCommands) {
+  for (let cmd of playCommandsValues) {
     if (cmd[1].questions > 0) {
       yourListMaps.push( { command : cmd[0], 
                           questions : cmd[1].questions, 
@@ -336,22 +402,104 @@ reset : () => {
 
   var results = [];
 
+  var index = 0;
   for (let cmd of yourListMaps) {
-    var str = "Команда " + cmd.command + 
+    var str = ++index + ". Команда " + cmd.command + 
               " ответила на " + cmd.correctAnswers + " вопросов из " + cmd.questions + 
               " на " + cmd.score + " баллов!";
 
     results.push(str);
   }
 
-  document.getElementById('info').innerHTML = "<br>" + results.join("<br><br>") + "<br><br><br>";
-  
-  document.querySelector('.quiz-over-modal').classList.add('active')
+  var strResult = results.length == 0 ? "Никто не играл:(" : results.join("<br><br>");
 
-  quiz.now = 0;
-  quiz.score = 0;
-  //quiz.draw();
-}
+  document.getElementById('info').innerHTML = "<br>" + strResult + "<br><br><br>";
+  document.querySelector('.quiz-over-modal').classList.add('active')
+},
+
+showGameMenu : (value) => {
+  if (value) {
+  document.getElementById('force_finish').classList.add("active");
+  document.getElementById('new_game').classList.add("active");
+  }
+  else {
+    document.getElementById('force_finish').classList.remove("active");
+    document.getElementById('new_game').classList.remove("active");
+  }
+},
+
 };
 
-window.addEventListener("load", quiz.init);
+window.addEventListener("load", () => { 
+
+  document.querySelector('.containerCommands').classList.add("active");
+
+  const add_command = document.getElementById("add_command");
+  add_command.addEventListener("click", function() {
+    const commandInputs = Array.from(document.getElementById("join-us").getElementsByTagName("input")).filter(t => { return t.type == "text"});
+    var input = document.createElement("input");
+    input.value = "Команда " + (commandInputs.length + 1) ;
+    input.type = "text";
+
+    var span = document.createElement("span");
+    span.appendChild(input);
+
+    document.querySelector('.fields').appendChild(document.createElement("br"));
+    document.querySelector('.fields').appendChild(span);
+  });
+
+  const start_command = document.getElementById("start_command");
+  start_command.addEventListener("click", function() {
+
+    document.getElementById('top_commands').classList.add("active");
+    document.querySelector('.containerCommands').classList.remove("active");
+    
+    quiz.showGameMenu(true);
+    
+    commandInputs = Array.from(document.getElementById("join-us").getElementsByTagName("input")).filter(t => { return t.type == "text"});
+    commands = commandInputs.map(t => { return t.value});
+    quiz.init(commands);
+  });
+
+  const force_finish = document.getElementById("force_finish");
+  force_finish.addEventListener("click", function() {
+    quiz.showGameMenu();
+    quiz.reset(quiz.playCommands);
+  });
+
+  const new_game = document.getElementById("new_game");
+  new_game.addEventListener("click", function() {
+
+    const commands= Array.from(quiz.playCommands.keys());
+
+    document.querySelector('.quizWrap').classList.remove("active");
+    document.getElementById('quizTable').classList.remove("active");
+    document.getElementById("top_commands").classList.remove("active");
+
+    quiz.showGameMenu(false);
+
+    document.getElementById("fields").innerHTML = "";
+    
+    for(let command of commands) {
+      var input = document.createElement("input");
+      input.value = command;
+      input.type = "text";
+  
+      var span = document.createElement("span");
+      span.appendChild(input);
+  
+      document.querySelector('.fields').appendChild(document.createElement("br"));
+      document.querySelector('.fields').appendChild(span);
+    }
+
+    document.querySelector('.containerCommands').classList.add("active");
+
+  } );
+
+  document.getElementById('btn-try-again').addEventListener('click', () => {
+    // window.location.reload()
+    document.querySelector('.quiz-over-modal').classList.remove("active");
+    document.getElementById('new_game').click();
+  });
+
+ });

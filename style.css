@@ -1,8 +1,14 @@
 /* (A) WRAPPER */
 .quizWrap {
   max-width: 600px;
-  margin: 0 auto;
-    display: none;
+  margin: 0 200;
+  display: none;
+
+	position: absolute;
+	top: 30%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+
 
   /* RECOMMENDED FIXED HEIGHT IF YOU HAVE CONTENT BELOW THE QUIZ */
   /* SO THAT PAGE LAYOUT DOES NOT "JUMP" */
@@ -11,6 +17,10 @@
 
 .quizWrap.active {
   display: grid;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
 }
 
 /* (B) QUESTION */
@@ -57,45 +67,114 @@
 html, body {
   background: #74b6db;
   font-family: arial, sans-serif;
+  
 }
 
-#commands {
-
-  width: 90%;
-  display: grid;
-  grid-gap: 30px;
+#bottom_commands {
   display: flex;
-  justify-content: center; 
-
+  justify-content: space-between; /* Размещаем элементы с пробелами между ними */
+  align-items: flex-end; /* Выровнять элементы по нижнему краю */
+  height: 160px; /* Высота контейнера для визуализации */
   padding: 10px;
-  background: #4c93ba;
+
   color: #fff;
-  font-size: 24px;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+}
+
+#bottom_commands_info {
+  text-align: right;
+  font-weight : 500;
+  font-size: 24px ;
+
+  display: flex;
+  justify-content: center;
+  margin-left: auto;
+  margin-right: 30px;
+}
+
+.game_menu_group button {
+  display: none;
+  justify-content: center;
+
+  margin: 10px;
+
+  background-color: darkcyan;
+  font-size: 18px;
+
+  vertical-align:bottom;
+
+  border: none; 
+  border-radius: 5px;
+  color: #ffffff;
+  padding: 10px 24px; /* Some padding */
+  cursor: pointer; /* Pointer/hand icon */
+  width: 100%; /* Set a width if needed */
+  white-space:nowrap;
+}
+
+.game_menu_group button:hover {
+  filter: brightness(85%)
+}
+
+.game_menu_group button.active {
+  display: flex;
+}
+
+#top_commands {
+  display: none;
+  flex-direction: row;
+  grid-gap: 10px;
+
+  justify-content: space-between; 
+  align-items: center;
+
+  color: #fff;
   border-radius: 10px;
-  margin: 10px auto;
   cursor: pointer;
+
+  height: 100%;
+  margin: 10px auto;
 }
 
-#command {
-    padding: 10px 50px;
-    background-color: darkcyan;
-    font-size: 18px;
-    color: #ffffff;
-    border: none; 
-    border-radius: 5px;
-    cursor: pointer;
-    transition: all .2s ease-in-out;
+#top_commands.active {
+  display: flex;
 }
 
-#command.correct {
+#command_item {
+  padding: 10px 50px;
+  background-color: darkcyan;
+  font-size: 18px  !important;
+  color: #ffffff;
+  border: none; 
+  border-radius: 5px;
+  cursor: pointer;
+  text-align: center;
+  width: 100%;
+  height: 70px;
+
+  display: flex;
+  flex-direction: row;
+  grid-gap: 10px;
+  justify-content: center; 
+  align-items: center;
+  vertical-align: top;
+}
+
+#command_item.correct {
   color: #ffffff;
   background-color: red;
 }
 
-
-#command.disable {
+#command_item.disable {
   opacity: 0.4;
   pointer-events: none;
+}
+
+#command_item:hover {
+  filter: brightness(85%)
 }
 
 .quiz-over-modal {
@@ -104,15 +183,13 @@ html, body {
   top: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.9);
-  z-index: 10;
   display: none;
   align-items: center;
   justify-content: center;
 }
 
 .quiz-over-modal.active {
-  display: flex;
+  display: grid;
 }
 
 .quiz-over-modal .content {
@@ -122,10 +199,11 @@ html, body {
   flex-basis: 700px;
   max-width: 700px;
   color: #ffffff;
-  text-align: center;
+  text-align: left;
 }
 
 .quiz-over-modal .content h1 {
+  text-align: center;
   font-size: 36px;
   margin: 0 0 20px;
 }
@@ -139,6 +217,9 @@ html, body {
   cursor: pointer;
   font-size: 20px;
   color: #ffffff;
+
+  margin:auto;
+  display:block;
 }
 
 .quiz-over-modal .content button:hover {
@@ -208,3 +289,138 @@ tbody {
 		}
 	}
 }
+
+#custom-button {
+  padding: 10px;
+  color: white;
+  background-color: #009578;
+  border: 1px solid #000;
+  border-radius: 5px;
+  cursor: pointer;
+
+  display :block
+
+}
+
+#custom-button:hover {
+  background-color: #00b28f;
+}
+
+#custom-text {
+  padding: 10px;
+  margin-left: 10px;
+  font-family: sans-serif;
+  color: #aaa;
+  text-align: center;
+}
+
+/*fonts*/
+@import url(https://fonts.googleapis.com/css?family=PT+Sans:400,400italic);
+
+@import url(https://fonts.googleapis.com/css?family=Droid+Serif);
+
+
+body{
+  counter-reset:section;
+  text-align:center;
+}
+
+.containerCommands{
+
+  position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+
+  height: 40%;
+
+  display: none;
+}
+
+.containerCommands.active {
+  display: block;
+}
+
+.containerCommands h1, .containerCommands span{
+  font-family:"Pt Sans", helvetica, sans-serif;
+}
+
+.containerCommands h1{
+  text-align:center;
+  color:#fff;
+  font-weight:100;
+  font-size:2em; 
+  margin-bottom:10px;
+}
+
+.containerCommands form span:before {
+  counter-increment:section;
+  content:counter(section);
+  border:2px solid #4c2639;
+  width:40px;
+  height:40px;
+  color:#fff;
+  display:inline-block;
+  border-radius:50%;
+  line-height:1.6em;
+  font-size:1.5em;
+  position:relative;
+  left:-22px;
+  top:-11px;
+  background:#2F1E27;
+}
+
+form{
+  margin-top:25px;
+  display:inline-block;
+}
+
+
+.containerCommands span{
+    margin-bottom:22px; 
+    display:inline-block;
+}
+
+.containerCommands span:last-child{
+   margin-bottom:-11px;
+}
+
+input{
+  border:none;
+  outline:none;
+  display:inline-block;
+  height:44px;
+  vertical-align:middle;
+  position:relative;
+  bottom:14px;
+  right:9px;
+  border-radius:6px;
+  width:400px;
+  box-sizing:border-box;
+  padding:0 18px; 
+
+  font-size: 24px;
+
+
+}
+
+input[type="button"]{ 
+  position:relative;
+  left:9px;
+  top:25px; 
+  width: 200px;
+
+  background-color: darkcyan;
+  font-size: 18px;
+  color: #ffffff;
+  border: none; 
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all .2s ease-in-out;
+}
+
+input[type="button"]:hover {
+  filter: brightness(85%)
+}
+
+

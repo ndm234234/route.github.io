@@ -9,15 +9,33 @@
 </head>
 <body>
 <!-- QUIZ CONTAINER -->
-<div id="commands"></div>
+<div class="containerCommands">
+    <h1>Введите названия команд:</h1>
+    <form action="" id="join-us">
+      <div class="fields" id = "fields">
+        <span>
+         <input value="Команда 1" type="text" />
+        </span>
+        <br />
+        <span>
+            <input value="Команда 2" type="text" />
+        </span>
+        </div>
+        <div class="submit">
+        <input class="submit" id="add_command" value="Добавить команду" type="button" />
+        <input class="submit" id="start_command"value="Начать" type="button" />
+      </div>
+    </form>
+  </div>
+<div id="top_commands">
+</div>
 <div class="quiz-over-modal">
     <div class="content">
-        <h1>Хороший результат !</h1>
+        <h1>Итоги</h1>
         <p><span id="info"></span></p>
         <button id="btn-try-again">Попробывать снова</button>
     </div>
 </div>
-
 <div class="quizWrap"></div>
 <div class="quizTable"></div>
 <div class="container">
@@ -25,6 +43,15 @@
 		<tbody>
 		</tbody>
 	</table>
+</div>
+<div id="bottom_commands">
+    <div class="game_menu_group">
+      <button id="force_finish">Завершить игру</button>
+      <button id="new_game">Новая игра</button>
+    </div>
+    <div id="bottom_commands_info">
+      <p>Школа 1538<br>Класс 3Э<br>2024-2025г.<br>Под руководством<br>Давыдовой С.В.</p>
+    </div>
 </div>
 </body>
 </html>
