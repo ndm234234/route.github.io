@@ -375,7 +375,6 @@ form{
   display:inline-block;
 }
 
-
 .containerCommands span{
     margin-bottom:22px; 
     display:inline-block;
@@ -400,8 +399,6 @@ input{
   padding:0 18px; 
 
   font-size: 24px;
-
-
 }
 
 input[type="button"]{ 
@@ -423,4 +420,19 @@ input[type="button"]:hover {
   filter: brightness(85%)
 }
 
+.crossImageButton {
+  display: inline-block;
+  background-color: inherit;
+  border: 0;
+  cursor: pointer;
+}
 
+.crossImageButton hover{
+  filter: brightness(85%)
+}
+
+.fields{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}

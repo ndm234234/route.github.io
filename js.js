@@ -103,6 +103,7 @@ hAns: null, // HTML answers wrapper
 currentCommand : "",
 playCommands : new Map(),
 queries : null,
+maxCommandsCount : 0,
 
 setScore: (control, name, value, correctAnswers, totalQuestion) => {
   let text = `${name}<br>Cчет: ${value}`;
@@ -428,6 +429,35 @@ showGameMenu : (value) => {
   }
 },
 
+createCommand: (name) => {
+  var input = document.createElement("input");
+  input.value = name ;
+  input.type = "text";
+
+  var span = document.createElement("span");
+  span.appendChild(input);
+
+  var div = document.createElement("div");
+  div.setAttribute("class", "crossImageButton");
+  var img = document.createElement("img");
+  img.src = "cross.jpg";
+  img.setAttribute("width", "40px");
+  img.setAttribute("height", "40px");
+  img.setAttribute("alt", "Icon");
+
+  img.addEventListener("click", function() {
+    if (document.querySelector('.fields').children.length > 1)
+    {
+      document.querySelector('.fields').removeChild(span);
+    }
+  });
+
+  div.appendChild(img);
+  span.appendChild(div);
+
+  document.querySelector('.fields').appendChild(span);
+}
+
 };
 
 window.addEventListener("load", () => { 
@@ -437,15 +467,14 @@ window.addEventListener("load", () => {
   const add_command = document.getElementById("add_command");
   add_command.addEventListener("click", function() {
     const commandInputs = Array.from(document.getElementById("join-us").getElementsByTagName("input")).filter(t => { return t.type == "text"});
-    var input = document.createElement("input");
-    input.value = "Команда " + (commandInputs.length + 1) ;
-    input.type = "text";
 
-    var span = document.createElement("span");
-    span.appendChild(input);
-
-    document.querySelector('.fields').appendChild(document.createElement("br"));
-    document.querySelector('.fields').appendChild(span);
+    if (commandInputs.length > quiz.maxCommandsCount)  {
+      quiz.maxCommandsCount = commandInputs.length + 1;
+    }
+    else    {
+      quiz.maxCommandsCount ++;
+    }
+    quiz.createCommand("Команда " + (quiz.maxCommandsCount));
   });
 
   const start_command = document.getElementById("start_command");
@@ -470,7 +499,7 @@ window.addEventListener("load", () => {
   const new_game = document.getElementById("new_game");
   new_game.addEventListener("click", function() {
 
-    const commands= Array.from(quiz.playCommands.keys());
+    const commands = Array.from(quiz.playCommands.keys());
 
     document.querySelector('.quizWrap').classList.remove("active");
     document.getElementById('quizTable').classList.remove("active");
@@ -481,19 +510,10 @@ window.addEventListener("load", () => {
     document.getElementById("fields").innerHTML = "";
     
     for(let command of commands) {
-      var input = document.createElement("input");
-      input.value = command;
-      input.type = "text";
-  
-      var span = document.createElement("span");
-      span.appendChild(input);
-  
-      document.querySelector('.fields').appendChild(document.createElement("br"));
-      document.querySelector('.fields').appendChild(span);
+      quiz.createCommand(command);
     }
 
     document.querySelector('.containerCommands').classList.add("active");
-
   } );
 
   document.getElementById('btn-try-again').addEventListener('click', () => {
@@ -502,4 +522,5 @@ window.addEventListener("load", () => {
     document.getElementById('new_game').click();
   });
 
+  quiz.createCommand("Команда 1");
  });
