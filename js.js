@@ -379,6 +379,7 @@ select: (option, query, index) => {
 // RESTART QUIZ
 reset : (playCommandsValues) => {
 
+  quiz.showGameMenu(false);
   document.getElementById('quizTable').classList.remove("active");
 
   document.querySelector('.quizWrap').classList.remove("active");
