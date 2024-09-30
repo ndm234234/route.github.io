@@ -457,6 +457,17 @@ createCommand: (name) => {
   span.appendChild(div);
 
   document.querySelector('.fields').appendChild(span);
+
+  const scrollToBottom = (id) => {
+    const element = document.getElementById(id);
+    element.scrollTop = element.scrollHeight;
+  }
+
+  scrollToBottom("fields");
+},
+
+getCommandInputs : () => {
+  return  Array.from(document.getElementById("join-us").getElementsByTagName("input")).filter(t => { return t.type == "text"});
 }
 
 };
@@ -467,7 +478,11 @@ window.addEventListener("load", () => {
 
   const add_command = document.getElementById("add_command");
   add_command.addEventListener("click", function() {
-    const commandInputs = Array.from(document.getElementById("join-us").getElementsByTagName("input")).filter(t => { return t.type == "text"});
+    const commandInputs = quiz.getCommandInputs();
+    if (commandInputs.length >= 7)
+    {
+      return;
+    }
 
     if (commandInputs.length > quiz.maxCommandsCount)  {
       quiz.maxCommandsCount = commandInputs.length + 1;
@@ -486,7 +501,7 @@ window.addEventListener("load", () => {
     
     quiz.showGameMenu(true);
     
-    commandInputs = Array.from(document.getElementById("join-us").getElementsByTagName("input")).filter(t => { return t.type == "text"});
+    commandInputs = quiz.getCommandInputs();
     commands = commandInputs.map(t => { return t.value});
     quiz.init(commands);
   });
@@ -524,4 +539,6 @@ window.addEventListener("load", () => {
   });
 
   quiz.createCommand("Команда 1");
- });
+  quiz.createCommand("Команда 2");
+  quiz.createCommand("Команда 3");
+});

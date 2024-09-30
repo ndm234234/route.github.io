@@ -82,6 +82,7 @@ html, body {
   left: 0;
   bottom: 0;
   width: 100%;
+  z-index: -100;
 }
 
 #bottom_commands_info {
@@ -326,15 +327,18 @@ body{
 }
 
 .containerCommands{
-
   position: absolute;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
-
-  height: 40%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 
   display: none;
+
+  width: 600px;
+  height: 530px;
+
+  background-color: darkcyan;
+  border-radius: 10px;
 }
 
 .containerCommands.active {
@@ -350,7 +354,6 @@ body{
   color:#fff;
   font-weight:100;
   font-size:2em; 
-  margin-bottom:10px;
 }
 
 .containerCommands form span:before {
@@ -434,5 +437,32 @@ input[type="button"]:hover {
 .fields{
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  justify-content: safe center;
+  align-items: center;
+
+  height: 320px;
+
+  width: 540px;
+
+  overflow-y: auto;
+  z-index: 100;
+
+  scrollbar-color: darkcyan #4c93ba;
+  scrollbar-width :auto;
+  scroll-snap-align: center;
+  padding-left: 20px;
+
+  background-color: darkcyan;
+  border-radius: 10px;
+
+  scrollbar-gutter: stable;
+}
+
+.submit_buttons {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  justify-content: center;
+
 }
