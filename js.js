@@ -406,8 +406,8 @@ reset : (playCommandsValues) => {
 
   var index = 0;
   for (let cmd of yourListMaps) {
-    var str = ++index + ". Команда " + cmd.command + 
-              " ответила на " + cmd.correctAnswers + " вопросов из " + cmd.questions + 
+    var str = ++index + ". Команда <b>" + cmd.command + 
+              "</b> ответила на " + cmd.correctAnswers + " вопросов из " + cmd.questions + 
               " на " + cmd.score + " баллов!";
 
     results.push(str);
