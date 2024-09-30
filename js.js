@@ -439,11 +439,12 @@ createCommand: (name) => {
   span.appendChild(input);
 
   var div = document.createElement("div");
-  div.setAttribute("class", "crossImageButton");
+  div.setAttribute("class", "divCrossImageButton");
   var img = document.createElement("img");
   img.src = "cross.jpg";
-  img.setAttribute("width", "40px");
-  img.setAttribute("height", "40px");
+  img.setAttribute("class", "crossImageButton");
+  img.setAttribute("width", "44px");
+  img.setAttribute("height", "44px");
   img.setAttribute("alt", "Icon");
 
   img.addEventListener("click", function() {

@@ -126,22 +126,20 @@ html, body {
 
 #top_commands {
   display: none;
-  flex-direction: row;
   grid-gap: 10px;
-
-  justify-content: space-between; 
-  align-items: center;
 
   color: #fff;
   border-radius: 10px;
   cursor: pointer;
+  width: 100%;
 
-  height: 100%;
-  margin: 10px auto;
+  border-spacing: 10px;
+  justify-content: center; 
+  table-layout: fixed;
 }
 
 #top_commands.active {
-  display: flex;
+  display: table !important;
 }
 
 #command_item {
@@ -153,15 +151,10 @@ html, body {
   border-radius: 5px;
   cursor: pointer;
   text-align: center;
-  width: 100%;
-  height: 70px;
 
-  display: flex;
-  flex-direction: row;
-  grid-gap: 10px;
+  display: table-cell ;
   justify-content: center; 
-  align-items: center;
-  vertical-align: top;
+  vertical-align: middle;
 }
 
 #command_item.correct {
@@ -423,14 +416,25 @@ input[type="button"]:hover {
   filter: brightness(85%)
 }
 
+.divCrossImageButton {
+  display: inline-block;
+  align-items: center;
+}
+
 .crossImageButton {
   display: inline-block;
   background-color: inherit;
-  border: 0;
+  border: none;
+  border-radius: 4px;
   cursor: pointer;
+  align-items: center;
+  justify-content: center;
+
+  position:relative;
+  top:4px;
 }
 
-.crossImageButton hover{
+.crossImageButton:hover{
   filter: brightness(85%)
 }
 
