@@ -613,6 +613,9 @@ createCommand: (name) => {
   }
 
   scrollToBottom("fields");
+
+  input.focus();
+  input.select();
 },
 
 getCommandInputs : () => {
