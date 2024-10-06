@@ -413,6 +413,11 @@ input[type="button"]{
   transition: all .2s ease-in-out;
 }
 
+input[type="button"].disable {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
 input[type="button"]:hover {
   filter: brightness(85%)
 }
@@ -469,5 +474,14 @@ input[type="button"]:hover {
   align-items: center;
 
   justify-content: center;
-
 }
+
+#quizAnsButtons {
+  align-items: center;
+  
+  display: flex;
+  grid-gap: 10px;
+  flex-direction: row;
+  justify-content: center; /* Размещаем элементы с пробелами между ними */
+}
+
