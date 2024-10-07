@@ -7,95 +7,119 @@ title: "Митино",
 items:
 [
   {
-    q: "Где расположен Храм Рождества Христова?",
-    o: [
+    question: "Что дало название Спасским мостам через Москву-реку на 67 км МКАД в районе Митино?",
+    options: [
+    "Село Спас",
+    "Праздник Яблочный спас",
+    "Спасская башня Московского Кремля",
+    "Спасо-Андроников монастырь на реке Яуза",
+    ],
+    answers: [0],
+    score: 100,
+    category: "Мосты и шлюзы Москвы-реки"
+  },
+  {
+    question: "Тестовый вопрос?",
+    options: [
+    "Правильный 1",
+    "Неправильный",
+    "Правильный 1",
+    "Правильный 1",
+    ],
+    answers: [0, 2, 3],
+    score: 50,
+    category: "Тестовые вопросы"
+  },
+  {
+    question: "Где расположен Храм Рождества Христова?",
+    options: [
     "Пос. Новобратцево ",
     "Село Рождествено",
     "Ул. Генерала Белобородова",
     "Ул. Пятницкое шоссе",
     ],
-    a: 2,
+    answers: [2],
     score: 30,
-    cat : "Достопримечательности"
+    category: "Достопримечательности"
   },
   {
-    q: "В честь кого из героев Митино названа одна из школ Митино?",
-    o: [
+    question: "В честь кого из героев Митино названа одна из школ Митино?",
+    options: [
     "Рокоссовский ",
     "Жуков",
     "Белобородов",
     "Конев",
     ],
-    a: 3,
+    answers: [3],
     score: 30,
-    cat : "Герои Митино"
+    category: "Герои Митино"
     },
     {
-      q: "В каком году впервые упоминается деревня «Митино» ?",
-      o: [
+      question: "В каком году впервые упоминается деревня «Митино» ?",
+      options: [
       "В 1389 в завещании Дмитрия Донского",
       "В летописях в 1646 года",
       "В постановлении 1985 о вхождении в состав Москвы",
       "В 1997 при создании герба",
       ],
-      a: 1,
+      answers: [1],
       score: 30,
-      cat : "История Митино"
+      category: "История Митино"
       },
   {
-  q: "Как назвается скамейка в Митино ?",
-  o: [
+  question: "Как назвается скамейка в Митино ?",
+  options: [
   "Старая",
   "Новая",
   "Историческая",
   ],
-  a: 0,
+  answers: [0,2],
   score: 10,
-  cat : "История Митино"
+  category: "История Митино"
   },
   {
-  q: "Как назвается скамейка в Митино 2 ?",
-  o: [
+  question: "Как назвается скамейка в Митино 2 ?",
+  options: [
   "Старая",
   "Новая",
   "Историческая",
   ],
-  a: 0,
+  answers: [0],
   score: 10,
-  cat : "История Митино"
+  category: "История Митино"
   },
   {
-  q: "Кто признан лучшим вратарём в 2019 году по версии ФИФА?",
-  o: [
+  question: "Кто признан лучшим вратарём в 2019 году по версии ФИФА?",
+  options: [
   "Давид де Хеа",
   "Алиссон",
   "Тибо Куртуа",
   ],
-  a: 0,
+  answers: [0],
   score: 30,
-  cat : "История Митино"
+  category: "История Митино"
   },
   {
-  q: "Кто является лучшим бомбардиром за всю историю сборной Португалии?",
-  o: [
+  question: "Кто является лучшим бомбардиром за всю историю сборной Португалии?",
+  options: [
   "Матийс де Лигт",
   "Лионель Месси",
   "Криштиану Роналду",
   "Вирджил ван Дейк",
   ],
-  a: 0,
+  answers: [0],
   score: 40,
-  cat : "Природа"
+  category: "Природа"
   },
   {
-  q: "В какой стране впервые проходил Кубок мира ФИФА?",
-  o: [
+  question: "В какой стране впервые проходил Кубок мира ФИФА?",
+  options: [
   "Уругвай",
   "Франция",
   ],
-  a: 0,
+  answers: [0],
   score: 10,
-  cat : "Экономика"
+  category: "Экономика"
   }
 ]
 },
@@ -103,7 +127,6 @@ items:
 hWrap: null, // HTML quiz container
 hQn: null, // HTML question wrapper
 hAns: null, // HTML answers wrapper
-hAnsButtons: null,
 selectedRandomQuery : null,
 // GAME FLAGS
 currentCommand : "",
@@ -112,6 +135,7 @@ queries : null,
 maxCommandsCount : 0,
 currentCommandIndex : 0,
 queryAnswers : null,
+questionNumber: 0,
 
 setScore: (control, name, value, correctAnswers, totalQuestion) => {
   let text = `${name}<br>Cчет: ${value}`;
@@ -135,7 +159,7 @@ JSONToFile : (obj, filename) => {
 },
 
 fillTable: () => {
-
+ 
   var tbl = document.getElementById('quizTable').getElementsByTagName('tbody')[0];
   tbl.innerHTML = "";
 
@@ -191,7 +215,7 @@ commandGame: (commandIndex) => {
       control.classList.add("correct");
       control.classList.remove("disable"); 
 
-      if (currentCommand != control.name)  {
+      if (quiz.currentCommand != control.name)  {
         currentCommand = control.name;
         quiz.showQuestionPanel(false);
         quiz.fillTable();
@@ -210,7 +234,9 @@ commandGame: (commandIndex) => {
 init: (commandNames) => {
   // WRAPPER
 
-  currentCommand = "";
+  quiz.questionNumber = 0;
+  quiz.currentCommand = "";
+  quiz.currentCommandIndex = 0;
   quiz.hWrap = document.querySelector('.quizWrap');
  
   var jsonData = JSON.stringify(quiz.data, null, 2);
@@ -218,30 +244,32 @@ init: (commandNames) => {
 
   document.title = quiz.data.title;
 
+  document.getElementById('game_title').innerHTML = quiz.data.title;
+
   queries = new Map();
   for (let i = 0; i < quiz.data.items.length; i++) {
 
-    query = { query : quiz.data.items[i].q, 
-              answers : quiz.data.items[i].o,
-              answer : quiz.data.items[i].a,
+    query = { query : quiz.data.items[i].question, 
+              options : quiz.data.items[i].options,
+              answers : new Set(quiz.data.items[i].answers),
               score : quiz.data.items[i].score
             };
 
-    if (queries.has(quiz.data.items[i].cat)) {
-      if (queries.get(quiz.data.items[i].cat).has(quiz.data.items[i].score)) {
-        queries.get(quiz.data.items[i].cat).get(quiz.data.items[i].score).add(query );
+    if (queries.has(quiz.data.items[i].category)) {
+      if (queries.get(quiz.data.items[i].category).has(quiz.data.items[i].score)) {
+        queries.get(quiz.data.items[i].category).get(quiz.data.items[i].score).add(query );
       }
       else
       {
-        queries.get(quiz.data.items[i].cat).set(quiz.data.items[i].score, new Set());
-        queries.get(quiz.data.items[i].cat).get(quiz.data.items[i].score).add(query);
+        queries.get(quiz.data.items[i].category).set(quiz.data.items[i].score, new Set());
+        queries.get(quiz.data.items[i].category).get(quiz.data.items[i].score).add(query);
       }
     }
     else {
       const mapItems = new Map();
       mapItems.set(quiz.data.items[i].score, new Set());
       mapItems.get(quiz.data.items[i].score).add(query);
-      queries.set(quiz.data.items[i].cat, mapItems);
+      queries.set(quiz.data.items[i].category, mapItems);
     }
   }
 
@@ -332,31 +360,31 @@ showQuestion: (cat, scoreValue) => {
 },
 
 isCorrectAnswers : () => {
-
-  if (quiz.queryAnswers != null && quiz.queryAnswers.size == 1) {
-     
-    let answer = quiz.queryAnswers.values().next().value;
-    let correctAnswer = quiz.selectedRandomQuery.answer;
-    return (answer == correctAnswer);
+  if (quiz.queryAnswers != null) {
+    let answers = quiz.queryAnswers;
+    let correctAnswers = quiz.selectedRandomQuery.answers;
+    return (correctAnswers.difference(answers).size == 0 && answers.difference(correctAnswers).size == 0);
   }
   return false;
 },
 
 // DRAW QUESTION
 draw: (query) => {
+
+  quiz.questionNumber ++;
   // QUESTION
-  quiz.hQn.innerHTML = query.query + "  (" + query.score + " баллов)";
+  quiz.hQn.innerHTML = query.query;
   // OPTIONS
   quiz.hAns.innerHTML = "";
   var index = 0;
-  for (let answer of query.answers) {
+  for (let option of query.options) {
     let radio = document.createElement("input");
     radio.type = "radio";
     radio.name = "quiz";
 //    radio.id = "quizo" + i;
     quiz.hAns.appendChild(radio);
     let label = document.createElement("label");
-    label.innerHTML = answer;
+    label.innerHTML = option;
     label.id = index;
     label.className = "label_question";
     //label.setAttribute("for", "quizo" + i);
@@ -374,16 +402,15 @@ draw: (query) => {
   }
 
   let button = document.createElement("input");
-  button.class = "submit";
+  button.setAttribute("class", "submit");
+  button.id = "button_show_answer";
   button.value = "Показать ответ";
   button.type = "button";
-  button.id = "button_show_answer";
   button.addEventListener('click', () =>  {
 
     let answers = quiz.hAns.getElementsByClassName("label_question");
     for (let answer of answers) {
-
-      if (answer.id == quiz.selectedRandomQuery.answer) {
+      if (quiz.selectedRandomQuery.answers.has(parseInt(answer.id))) {
         answer.classList.add("correct")
       }
       else {
@@ -400,10 +427,10 @@ draw: (query) => {
   quiz.hAnsButtons.appendChild(button);
 
   let buttonNext = document.createElement("input");
-  buttonNext.class = "submit";
+  buttonNext.setAttribute("class", "submit");
+  buttonNext.id = "button_next";
   buttonNext.value = "Далее";
   buttonNext.type = "button";
-  buttonNext.id = "button_next";
   buttonNext.classList.add("disable");
 
   buttonNext.addEventListener('click', () =>  {
@@ -424,7 +451,7 @@ draw: (query) => {
     }
 
     quiz.showQuestionPanel(false);
-    currentCommand = "";
+    quiz.currentCommand = "";
     
     if (queries.size > 0) { 
         const commands = document.querySelectorAll(".command_item");
@@ -450,6 +477,9 @@ draw: (query) => {
   });
 
   quiz.hAnsButtons.appendChild(buttonNext);
+
+  document.getElementById('question_info').innerHTML = "Вопрос " + quiz.questionNumber.toString() + " из  " +  quiz.data.items.length.toString();
+  document.getElementById('question_score').innerHTML = query.score.toString() + " баллов";
 },
 
 showButtonAnswer: (value) => {
@@ -478,9 +508,12 @@ select: (option, query, index) => {
   }
   let correct = false;
   for (let i = 0; i < quiz.data.items.length; i++) {
-    if (query.query == quiz.data.items[i].q && index == quiz.data.items[i].a) {
+    if (query.query == quiz.data.items[i].question) {
+      let answers = new Set(quiz.data.items[i].answers);
+      if (answers.has(index)) { 
         correct = true;
         break;
+      }
     }
   }
   if (correct) {
@@ -525,8 +558,8 @@ reset : (playCommandsValues) => {
 
   var index = 0;
   for (let cmd of yourListMaps) {
-    var str = ++index + ". Команда <b>" + cmd.command + 
-              "</b> ответила на " + cmd.correctAnswers + " вопросов из " + cmd.questions + 
+    var str = ++index + ". Команда <b>\"" + cmd.command + 
+              "\"</b> ответила на " + cmd.correctAnswers + " вопросов из " + cmd.questions + 
               " на " + cmd.score + " баллов!";
 
     results.push(str);
@@ -549,9 +582,11 @@ showQuizTable : (value) => {
 
 showQuestionPanel: (value) => {
   if (value) {
+    document.querySelector('.question_panel').classList.add("active");
     document.querySelector('.quizWrap').classList.add("active");
   }
   else {
+      document.querySelector('.question_panel').classList.remove("active");
       document.querySelector('.quizWrap').classList.remove("active");
   }
 },
@@ -571,9 +606,11 @@ showGameMenu : (value) => {
 
 showTopPanel: (value) => {
   if (value) {
-  document.getElementById('top_commands').classList.add("active");
+    document.getElementById('top_panel').classList.add("active");
+    document.getElementById('top_commands').classList.add("active");
   }
   else {
+    document.getElementById('top_panel').classList.remove("active");
     document.getElementById('top_commands').classList.remove("active");
   }
 },
@@ -706,7 +743,8 @@ window.addEventListener("load", () => {
 
   quiz.createCommand("Команда 1");
   quiz.createCommand("Команда 2");
-  quiz.createCommand("Команда 3");
+
+  //document.addEventListener('contextmenu', event => event.preventDefault());
 
   const loadFileButton = document.getElementById('load_file');
 
@@ -732,7 +770,6 @@ window.addEventListener("load", () => {
         }
       r.readAsText(file);
     } else {
-      customTxt.innerHTML = "No file chosen, yet.";
     }
   }); 
 }
