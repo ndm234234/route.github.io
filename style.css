@@ -1,26 +1,68 @@
-/* (A) WRAPPER */
-.quizWrap {
+
+.question_panel {
+
   max-width: 600px;
-  margin: 0 200;
+  
   display: none;
 
-	position: absolute;
-	top: 30%;
+ 
+  /* RECOMMENDED FIXED HEIGHT IF YOU HAVE CONTENT BELOW THE QUIZ */
+  /* SO THAT PAGE LAYOUT DOES NOT "JUMP" */
+
+  position: absolute;
+	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
 
+  color: #fff;
 
+  
+  border-radius: 5px;
+
+  padding: 0;
+
+
+
+}
+
+.question_panel.active {
+  display: grid;
+
+}
+
+
+.question_panel_info {
+  font-size: 24px;
+  border-bottom: 1px solid #ccc;
+  margin: 10px 0 ;
+  padding-bottom: 10px;
+}
+
+.question_panel_info #question_info 
+{ 
+  float:left 
+}
+
+.question_panel_info #question_score { 
+  float:right 
+}
+
+
+/* (A) WRAPPER */
+.quizWrap {
+  display: none;
+
+ 
   /* RECOMMENDED FIXED HEIGHT IF YOU HAVE CONTENT BELOW THE QUIZ */
   /* SO THAT PAGE LAYOUT DOES NOT "JUMP" */
-  height: 250px;
+
+  margin: 0;
+
 }
 
 .quizWrap.active {
   display: grid;
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
+
 }
 
 /* (B) QUESTION */
@@ -33,7 +75,9 @@
   background: #4c93ba;
   color: #fff;
   font-size: 24px;
-  border-radius: 10px;
+  border-radius: 5px;
+
+  margin: 0;
 }
 
 /* (C) ANSWERS */
@@ -41,6 +85,9 @@
   margin: 10px 0;
   display: grid;
   grid-gap: 10px;
+
+  padding-bottom: 1px;
+
 }
 
 
@@ -53,6 +100,7 @@
   font-size: 20px;
   cursor: pointer;
   text-align: center;
+  color: black;
 }
 #quizAns label.correct {
   background: #d8ffc4;
@@ -63,11 +111,22 @@
   border: 1px solid #c78181;
 }
 
+#quizAnsButtons {
+ 
+  border-top: 1px solid #ccc;
+  
+  padding-top: 10px;
+
+  display: flex;
+  grid-gap: 10px;
+  justify-content: center; /* Размещаем элементы с пробелами между ними */
+}
+
+
 /* (D) BODY... DOES NOT QUITE MATTER */
 html, body {
   background: #74b6db;
   font-family: arial, sans-serif;
-  
 }
 
 #bottom_commands {
@@ -122,6 +181,19 @@ html, body {
 
 .game_menu_group button.active {
   display: flex;
+}
+
+#top_panel {
+  display: none;
+  flex-direction: column;
+  color: #fff;
+
+  font-size: 16px;
+}
+
+#top_panel.active {
+  display: flex;
+
 }
 
 #top_commands {
@@ -393,7 +465,6 @@ input{
   width:400px;
   box-sizing:border-box;
   padding:0 18px; 
-
   font-size: 24px;
   text-align: center;
 }
@@ -468,20 +539,5 @@ input[type="button"]:hover {
   scrollbar-gutter: stable;
 }
 
-.submit_buttons {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
 
-  justify-content: center;
-}
-
-#quizAnsButtons {
-  align-items: center;
-  
-  display: flex;
-  grid-gap: 10px;
-  flex-direction: row;
-  justify-content: center; /* Размещаем элементы с пробелами между ними */
-}
 
