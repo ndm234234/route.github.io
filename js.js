@@ -1,7 +1,4 @@
 let quiz = {
-// PROPERTIES
-// QUESTIONS & ANSWERS
-// Q = QUESTION, O = OPTIONS, A = CORRECT ANSWER
 data : { 
 title: "Митино",
 items:
@@ -474,8 +471,9 @@ draw: (query) => {
     }
     quiz.showButtonNext(true);
 
-    if (query.info != null) {
-      document.getElementById('question_panel_data_information').innerHTML =  query.info;
+    //if (query.info != null) 
+      {
+      document.getElementById('question_panel_data_information').innerHTML =  query.info != null ? query.info : "";
       quiz.showInformation(true);
     }
   });
@@ -638,12 +636,12 @@ showQuizTable : (value) => {
 
 showInformation: (value) => {
   if (value) {
-    document.querySelector('.question_panel').classList.add("collapse");
     document.querySelector('.question_panel_data').classList.add("active");
+    document.querySelector('.question_panel').classList.add("collapse");
   }
   else {
-    document.querySelector('.question_panel').classList.remove("collapse");
     document.querySelector('.question_panel_data').classList.remove("active");
+    document.querySelector('.question_panel').classList.remove("collapse");
   }
 },
 

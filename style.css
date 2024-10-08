@@ -10,6 +10,7 @@
   flex-direction: row;
   justify-content: center; 
   align-items:center;
+  position: relative;
 }
 
 .question_panel_all.active {
@@ -18,9 +19,12 @@
 
 .question_panel_data {
   display: none;
-  width: 100%;
-  justify-content: center;
-  padding: 20px;
+
+  position :absolute;
+  width: 60%;
+  margin-left: 700px;
+  justify-content :space-around;
+
   text-align: left;
   color: #fff;
 }
@@ -30,10 +34,22 @@
   font-size: 24px;
   font-weight:500;
   padding: 25px;
+
 }
 
 .question_panel_data.active {
   display: flex;
+  animation: showPanelData 0.8s linear  1;
+  opacity: 1;
+}
+
+@keyframes showPanelData {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 .question_panel {
@@ -44,21 +60,27 @@
   color: #fff;
   border-radius: 5px;
   padding-top: 10px;
+  padding-left: 0;
+  padding-right: 0;
   height: 80%;
-  width: 100%;
+  box-sizing:border-box;
+
+  position: absolute;
+  width: 700px;
+  min-width: 700px;
 }
 
 .question_panel.collapse {
-  animation: moveLeft 0.2s 1;
-  width: 40%;
+  left: 0;
+  animation: moveLeft 0.5s linear  1;
 }
 
 @keyframes moveLeft {
   from {
-    width: 100%;
+    left: calc((100% - 700px)/2);
   }
   to {
-    width: 45%;
+    left: 0;
   }
 }
 
