@@ -1,41 +1,42 @@
+.mainContainer {
+  height: 85%;
+  position: relative;
+  z-index: 100;
+}
 
 .question_panel {
 
-  max-width: 600px;
-  
   display: none;
 
- 
-  /* RECOMMENDED FIXED HEIGHT IF YOU HAVE CONTENT BELOW THE QUIZ */
-  /* SO THAT PAGE LAYOUT DOES NOT "JUMP" */
-
-  position: absolute;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
-
+  flex-direction: column;
+  justify-content: center; 
+  align-items:center;
   color: #fff;
-
   
   border-radius: 5px;
+  padding-top: 10px;
 
-  padding: 0;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 700px;
+  height: 80%;
 
-
-
+  animation: pulse 0.3s 1;
 }
 
 .question_panel.active {
-  display: grid;
-
+  display: flex;
 }
-
 
 .question_panel_info {
   font-size: 24px;
   border-bottom: 1px solid #ccc;
   margin: 10px 0 ;
   padding-bottom: 10px;
+
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
 }
 
 .question_panel_info #question_info 
@@ -47,37 +48,29 @@
   float:right 
 }
 
-
 /* (A) WRAPPER */
 .quizWrap {
   display: none;
-
- 
-  /* RECOMMENDED FIXED HEIGHT IF YOU HAVE CONTENT BELOW THE QUIZ */
-  /* SO THAT PAGE LAYOUT DOES NOT "JUMP" */
-
+  flex-direction: column;
   margin: 0;
-
+  width: 100%;
 }
 
 .quizWrap.active {
-  display: grid;
-
+  display: flex;
 }
 
 /* (B) QUESTION */
+#quizQnCategory,
 #quizQn {
- 
   display: flex;
   justify-content: center; 
-
   padding: 20px;
   background: #4c93ba;
   color: #fff;
   font-size: 24px;
   border-radius: 5px;
-
-  margin: 0;
+  margin: 5px 0;
 }
 
 /* (C) ANSWERS */
@@ -85,9 +78,7 @@
   margin: 10px 0;
   display: grid;
   grid-gap: 10px;
-
   padding-bottom: 1px;
-
 }
 
 
@@ -102,98 +93,42 @@
   text-align: center;
   color: black;
 }
+
 #quizAns label.correct {
   background: #d8ffc4;
   border: 1px solid #60a03f;
 }
+
 #quizAns label.wrong {
   background: #ffe8e8;
   border: 1px solid #c78181;
 }
 
 #quizAnsButtons {
- 
   border-top: 1px solid #ccc;
-  
-  padding-top: 10px;
-
+  padding: 10px;
   display: flex;
+  flex-direction: row;
   grid-gap: 10px;
-  justify-content: center; /* Размещаем элементы с пробелами между ними */
+  justify-content: center; 
 }
-
 
 /* (D) BODY... DOES NOT QUITE MATTER */
 html, body {
   background: #74b6db;
   font-family: arial, sans-serif;
-}
-
-#bottom_commands {
-  display: flex;
-  justify-content: space-between; /* Размещаем элементы с пробелами между ними */
-  align-items: flex-end; /* Выровнять элементы по нижнему краю */
-  height: 160px; /* Высота контейнера для визуализации */
-  padding: 10px;
-
-  color: #fff;
-  position: fixed;
-  left: 0;
-  bottom: 0;
-  width: 100%;
-  z-index: -100;
-}
-
-#bottom_commands_info {
-  text-align: right;
-  font-weight : 500;
-  font-size: 24px ;
-
-  display: flex;
-  justify-content: center;
-  margin-left: auto;
-  margin-right: 30px;
-}
-
-.game_menu_group button {
-  display: none;
-  justify-content: center;
-
-  margin: 10px;
-
-  background-color: darkcyan;
-  font-size: 18px;
-
-  vertical-align:bottom;
-
-  border: none; 
-  border-radius: 5px;
-  color: #ffffff;
-  padding: 10px 24px; /* Some padding */
-  cursor: pointer; /* Pointer/hand icon */
-  width: 100%; /* Set a width if needed */
-  white-space:nowrap;
-}
-
-.game_menu_group button:hover {
-  filter: brightness(85%)
-}
-
-.game_menu_group button.active {
-  display: flex;
+  height: 95%;
 }
 
 #top_panel {
   display: none;
   flex-direction: column;
   color: #fff;
-
   font-size: 16px;
 }
 
 #top_panel.active {
   display: flex;
-
 }
 
 #top_commands {
@@ -205,17 +140,17 @@ html, body {
   cursor: pointer;
   width: 100%;
 
+  flex-direction: row;
   border-spacing: 10px;
   justify-content: center; 
-  table-layout: fixed;
-}
+ }
 
 #top_commands.active {
-  display: table !important;
+  display: flex
 }
 
 #command_item {
-  padding: 10px 50px;
+  padding: 15px 15px;
   background-color: darkcyan;
   font-size: 18px  !important;
   color: #ffffff;
@@ -224,10 +159,33 @@ html, body {
   cursor: pointer;
   text-align: center;
 
-  display: table-cell ;
+  display: flex ;
+  flex-direction: column;
   justify-content: center; 
   vertical-align: middle;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  
+  animation: pulse 0.3s 1;
+
 }
+
+#command_item #span_command_name
+{ 
+  float: left;
+}
+
+#command_item #span_command_score { 
+  float:right;
+}
+
+#command_item #span_custom_info
+{ 
+  float: left;
+}
+
+
 
 #command_item.correct {
   color: #ffffff;
@@ -292,26 +250,24 @@ html, body {
   background-color: #ff9900e5;
 }
 
-.container {
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
+.quizTableContainer {
+  display: none;
+  justify-content: center;
+  height: 80%;
+  margin: auto;
+  padding: 10px 0;
+}
+
+.quizTableContainer.active {
+  display:  flex;
 }
 
 table {
-	width: 1000px;
 	border-collapse: collapse;
 	overflow: hidden;
 	box-shadow: 0 0 20px rgba(0,0,0,0.1);
   cursor: pointer;
-  display:  none;
   font-size: 24px;
-
-}
-
-table.active {
-  display:  flex;
 }
 
 th,
@@ -320,7 +276,6 @@ td {
 	color: #fff;
   width: 1000px;
   text-align: center;
-
 }
 
 th {
@@ -392,18 +347,15 @@ body{
 }
 
 .containerCommands{
-  position: absolute;
+  position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-
   display: none;
-
   width: 600px;
-  height: 530px;
-
   background-color: darkcyan;
   border-radius: 10px;
+  z-index: 100;
 }
 
 .containerCommands.active {
@@ -439,7 +391,8 @@ body{
 }
 
 form{
-  margin-top:25px;
+  margin-top: 25px;
+  margin-bottom: 15px;
   display:inline-block;
 }
 
@@ -470,19 +423,33 @@ input{
 }
 
 input[type="button"]{ 
-  position:relative;
-  left:9px;
-  top:25px; 
   width: 200px;
-
+  right: 0;
+  top: 0;
   background-color: darkcyan;
   font-size: 18px;
   color: #ffffff;
   border: none; 
   border-radius: 5px;
   cursor: pointer;
-  transition: all .2s ease-in-out;
+ 
 }
+
+@keyframes pulse {
+  0% {
+      transform: scale(0.1);
+      box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.7);
+  }
+
+  100% {
+      transform: scale(1);
+      box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.0);
+  }
+}
+
+
+
+
 
 input[type="button"].disable {
   opacity: 0.4;
@@ -540,4 +507,66 @@ input[type="button"]:hover {
 }
 
 
+#bottom_commands {
+  display: flex;
+  justify-content: space-between; /* Размещаем элементы с пробелами между ними */
+  align-items: flex-end; /* Выровнять элементы по нижнему краю */
+  padding: 10px;
 
+  color: #fff;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  z-index: 0;
+}
+
+#bottom_commands_info {
+  text-align: right;
+  font-weight : 500;
+  font-size: 24px ;
+
+  display: flex;
+  justify-content: center;
+  margin-left: auto;
+  margin-right: 30px;
+}
+
+#bottom_commands_info h1 {
+  text-align: right;
+  font-size: 24px;
+  font-weight:500;
+}
+
+.game_menu_group { 
+  height: 100%;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+.game_menu_group button {
+  display: none;
+  justify-content: center;
+
+  margin: 10px;
+
+  background-color: darkcyan;
+  font-size: 18px;
+
+  vertical-align:bottom;
+
+  border: none; 
+  border-radius: 5px;
+  color: #ffffff;
+  padding: 10px 24px; /* Some padding */
+  cursor: pointer; /* Pointer/hand icon */
+  width: 100%; /* Set a width if needed */
+  white-space:nowrap;
+}
+
+.game_menu_group button:hover {
+  filter: brightness(85%)
+}
+
+.game_menu_group button.active {
+  display: flex;
+}

@@ -19,7 +19,7 @@ items:
     category: "Мосты и шлюзы Москвы-реки"
   },
   {
-    question: "Тестовый вопрос?",
+    question: "Тестовый вопрос номер 1?",
     options: [
     "Правильный 1",
     "Неправильный",
@@ -143,7 +143,26 @@ setScore: (control, name, value, correctAnswers, totalQuestion) => {
   {
     text += "<br>Ответы: правильных " + correctAnswers + ", неправильных " + (totalQuestion - correctAnswers);
   }
-  control.innerHTML = text;
+ // control.innerHTML = text;
+
+ let divs  = control.getElementsByTagName('div');
+ for (const div of divs) {
+ let spans  = div.getElementsByTagName('span');
+ for (const span of spans) {
+  let className  = span.class;
+  if (className == "span_command_name") {
+    span.innerHTML = name;
+  }
+  if (className == "span_command_score") {
+    span.innerHTML = "Счет: " + value;
+  }
+  if (className == "span_custom_info" &&  (correctAnswers > 0 || totalQuestion > 0)) {
+    span.innerHTML = "Ответы: правильных " + correctAnswers + ", неправильных " + (totalQuestion - correctAnswers);
+  }
+}
+
+}
+ 
 },
 
 JSONToFile : (obj, filename) => {
@@ -284,6 +303,29 @@ init: (commandNames) => {
     command.id = "command_item";
     command.className = "command_item";
     command.name = value;
+    commands.appendChild(command);
+
+    let commandDiv = document.createElement("div");
+    commandDiv.id = "name_score_div";
+    command.appendChild(commandDiv);
+    let spanCommandName = document.createElement("span");
+    spanCommandName.class = "span_command_name";
+    spanCommandName.id = "span_command_name";
+    commandDiv.appendChild(spanCommandName);
+    let spanCommandScore = document.createElement("span");
+    spanCommandScore.class = "span_command_score";
+    spanCommandScore.id = "span_command_score";
+    commandDiv.appendChild(spanCommandScore);
+
+    let customDifInfo = document.createElement("div");
+    customDifInfo.id = "custom_div";
+    let spanCustomInfo = document.createElement("span");
+    spanCustomInfo.class = "span_custom_info";
+    spanCustomInfo.id = "span_custom_info";
+    customDifInfo.appendChild(spanCustomInfo);
+
+    command.appendChild(customDifInfo);
+
     quiz.setScore(command, value, 0, 0, 0 );
 
     command.addEventListener("click", () => {
@@ -309,7 +351,7 @@ init: (commandNames) => {
       }
     });
 
-    commands.appendChild(command);
+
 
     quiz.commandGame(0);
 
@@ -332,10 +374,17 @@ showQuestion: (cat, scoreValue) => {
       quiz.showQuestionPanel(true);
       
       quiz.hWrap.innerHTML = "";
+
+      let category = document.createElement("div");
+      category.id = "quizQnCategory";
+      category.innerHTML = cat;
+      quiz.hWrap.appendChild(category)
+
       // QUESTIONS SECTION
       quiz.hQn = document.createElement("div");
       quiz.hQn.id = "quizQn";
       quiz.hWrap.appendChild(quiz.hQn);
+
       // ANSWERS SECTION
       quiz.hAns = document.createElement("div");
       quiz.hAns.id = "quizAns";
@@ -573,10 +622,10 @@ reset : (playCommandsValues) => {
 
 showQuizTable : (value) => {
   if (value) {
-  document.getElementById('quizTable').classList.add("active");
+  document.querySelector('.quizTableContainer').classList.add("active");
   }
   else {
-    document.getElementById('quizTable').classList.remove("active");
+    document.querySelector('.quizTableContainer').classList.remove("active");
   }
 },
 
