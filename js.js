@@ -15,6 +15,7 @@ items:
     "Спасо-Андроников монастырь на реке Яуза",
     ],
     answers: [0],
+    info : "Спасские мосты — два трехпролетных автодорожных моста через реку Москву, расположенные на северо-западе Москвы в районе Митино на 67-м км Московской кольцевой автомобильной дороги (МКАД) и 44,7 км реки Москвы. Названы по находившемуся здесь ранее селу Спас. Первый мост (нижний) имеет арочную конструкцию и сооружен в 1962 году при строительстве кольцевой автодороги. Длина моста — 203,9 м, ширина — 24 м. Второй мост, имеющий балочную конструкцию, сооружен в 1997 году при реконструкции и расширении кольцевой автодороги. Он расположен выше по течению реки на 40 метров от оси первого моста. Судоходные пролеты — средние, их ширина — 90 метров, ширина судового хода в пролетах — 60 метров, высота пролетов в пределах судового хода — 10,5 метров от НПУ (нормальный подпорный уровень).",
     score: 100,
     category: "Мосты и шлюзы Москвы-реки"
   },
@@ -271,7 +272,8 @@ init: (commandNames) => {
     query = { query : quiz.data.items[i].question, 
               options : quiz.data.items[i].options,
               answers : new Set(quiz.data.items[i].answers),
-              score : quiz.data.items[i].score
+              score : quiz.data.items[i].score,
+              info :  quiz.data.items[i].info
             };
 
     if (queries.has(quiz.data.items[i].category)) {
@@ -471,6 +473,11 @@ draw: (query) => {
       quiz.queryAnswers = null;
     }
     quiz.showButtonNext(true);
+
+    if (query.info != null) {
+      document.getElementById('question_panel_data_information').innerHTML =  query.info;
+      quiz.showInformation(true);
+    }
   });
 
   quiz.hAnsButtons.appendChild(button);
@@ -629,15 +636,28 @@ showQuizTable : (value) => {
   }
 },
 
+showInformation: (value) => {
+  if (value) {
+    document.querySelector('.question_panel').classList.add("collapse");
+    document.querySelector('.question_panel_data').classList.add("active");
+  }
+  else {
+    document.querySelector('.question_panel').classList.remove("collapse");
+    document.querySelector('.question_panel_data').classList.remove("active");
+  }
+},
+
 showQuestionPanel: (value) => {
   if (value) {
-    document.querySelector('.question_panel').classList.add("active");
+    document.querySelector('.question_panel_all').classList.add("active");
     document.querySelector('.quizWrap').classList.add("active");
   }
   else {
-      document.querySelector('.question_panel').classList.remove("active");
+      document.querySelector('.question_panel_all').classList.remove("active");
       document.querySelector('.quizWrap').classList.remove("active");
   }
+
+  quiz.showInformation(false);
 },
 
 showGameMenu : (value) => {
