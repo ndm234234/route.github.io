@@ -20,13 +20,14 @@
 .question_panel_data {
   display: none;
 
-  position :absolute;
-  width: 60%;
-  margin-left: 700px;
+  position :relative;
+  width: 80%;
+  height: 80%;
   justify-content :space-around;
 
-  text-align: left;
+  text-align: right;
   color: #fff;
+  flex-direction: column;
 }
 
 .question_panel_data h1 {
@@ -34,12 +35,11 @@
   font-size: 24px;
   font-weight:500;
   padding: 25px;
-
 }
 
 .question_panel_data.active {
-  display: flex;
-  animation: showPanelData 0.8s linear  1;
+  display: flex ;
+  animation: showPanelData 0.8s linear  1 ;
   opacity: 1;
 }
 
@@ -50,6 +50,20 @@
   to {
     opacity: 1;
   }
+}
+
+@keyframes showPanelDataReverse {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+.question_panel_data_button {
+  display: flex;
+  justify-content: right;
 }
 
 .question_panel {
@@ -68,11 +82,14 @@
   position: absolute;
   width: 700px;
   min-width: 700px;
+  animation: showPanelData 0.8s linear  1;
+  opacity: 1;
+
 }
 
 .question_panel.collapse {
-  left: 0;
-  animation: moveLeft 0.5s linear  1;
+  animation: showPanelDataReverse 0.8s linear  1 ;
+  opacity: 0;
 }
 
 @keyframes moveLeft {
@@ -488,7 +505,6 @@ input[type="button"]{
   border: none; 
   border-radius: 5px;
   cursor: pointer;
- 
 }
 
 @keyframes pulse {

@@ -407,6 +407,48 @@ showQuestion: (cat, scoreValue) => {
   }
 },
 
+processAnswer : () => {     
+  quiz.playCommands.get(currentCommand).questions ++;
+
+  if (quiz.isCorrectAnswers()) {
+    quiz.playCommands.get(currentCommand).score += quiz.selectedRandomQuery.score;
+    quiz.playCommands.get(currentCommand).correctAnswers ++;
+  }
+
+  let commands = document.getElementById("top_commands");
+  for (let control of commands.getElementsByClassName("command_item")) {
+  if (control.name == currentCommand) {
+    quiz.setScore(control, 
+      currentCommand, quiz.playCommands.get(currentCommand).score, quiz.playCommands.get(currentCommand).correctAnswers, quiz.playCommands.get(currentCommand).questions);
+    }
+  }
+
+  quiz.showQuestionPanel(false);
+  quiz.currentCommand = "";
+  
+  if (queries.size > 0) { 
+      const commands = document.querySelectorAll(".command_item");
+      if (++quiz.currentCommandIndex == commands.length)
+      {
+        quiz.currentCommandIndex = 0;
+      }
+      quiz.commandGame(quiz.currentCommandIndex);
+  } else {
+    quiz.hQn.innerHTML = "";
+    quiz.hAns.innerHTML = "";
+    quiz.reset(quiz.playCommands);
+  }
+
+  /*
+
+  const commands = document.getElementById("top_commands");
+  let all = commands.getElementsByClassName("command_item");
+  for (let control of all) {
+    control.classList.remove("correct");
+    control.classList.remove("disable"); 
+  }*/
+ },
+
 isCorrectAnswers : () => {
   if (quiz.queryAnswers != null) {
     let answers = quiz.queryAnswers;
@@ -473,7 +515,7 @@ draw: (query) => {
 
     //if (query.info != null) 
       {
-      document.getElementById('question_panel_data_information').innerHTML =  query.info != null ? query.info : "";
+      document.getElementById('question_panel_data_information').innerHTML =  query.info != null ? query.info : "Внесите дополнительную информацию о вопросе.";
       quiz.showInformation(true);
     }
   });
@@ -488,46 +530,7 @@ draw: (query) => {
   buttonNext.classList.add("disable");
 
   buttonNext.addEventListener('click', () =>  {
-    
-    quiz.playCommands.get(currentCommand).questions ++;
-
-    if (quiz.isCorrectAnswers()) {
-      quiz.playCommands.get(currentCommand).score += quiz.selectedRandomQuery.score;
-      quiz.playCommands.get(currentCommand).correctAnswers ++;
-    }
-
-    let commands = document.getElementById("top_commands");
-    for (let control of commands.getElementsByClassName("command_item")) {
-    if (control.name == currentCommand) {
-      quiz.setScore(control, 
-        currentCommand, quiz.playCommands.get(currentCommand).score, quiz.playCommands.get(currentCommand).correctAnswers, quiz.playCommands.get(currentCommand).questions);
-      }
-    }
-
-    quiz.showQuestionPanel(false);
-    quiz.currentCommand = "";
-    
-    if (queries.size > 0) { 
-        const commands = document.querySelectorAll(".command_item");
-        if (++quiz.currentCommandIndex == commands.length)
-        {
-          quiz.currentCommandIndex = 0;
-        }
-        quiz.commandGame(quiz.currentCommandIndex);
-    } else {
-      quiz.hQn.innerHTML = "";
-      quiz.hAns.innerHTML = "";
-      quiz.reset(quiz.playCommands);
-    }
-
-    /*
-
-    const commands = document.getElementById("top_commands");
-    let all = commands.getElementsByClassName("command_item");
-    for (let control of all) {
-      control.classList.remove("correct");
-      control.classList.remove("disable"); 
-    }*/
+    quiz.processAnswer();
   });
 
   quiz.hAnsButtons.appendChild(buttonNext);
@@ -640,8 +643,8 @@ showInformation: (value) => {
     document.querySelector('.question_panel').classList.add("collapse");
   }
   else {
-    document.querySelector('.question_panel_data').classList.remove("active");
-    document.querySelector('.question_panel').classList.remove("collapse");
+   document.querySelector('.question_panel_data').classList.remove("active");
+   document.querySelector('.question_panel').classList.remove("collapse");
   }
 },
 
@@ -839,5 +842,10 @@ window.addEventListener("load", () => {
     } else {
     }
   }); 
+
+  const closeButton = document.getElementById("question_panel_data_information_button");
+  closeButton.addEventListener("click", function() {
+    quiz.showInformation(false);
+  });
 }
 );
